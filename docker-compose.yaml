@@ -1,6 +1,28 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:16-alpine
+    container_name: esgseed
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=esgseed
+      - POSTGRES_PASSWORD=esgseed1234
+      - POSTGRES_DB=esgseeddb
+      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
+    networks:
+      - microservices-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U esgseed -d esgseeddb" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Config Server - 가장 먼저 실행
   config-server:
     build:
@@ -123,28 +145,6 @@ services:
       - DB_USER=esgseed
       - DB_PASSWORD=esgseed1234
       - DB_NAME=soccer_db
-
-  # PostgreSQL Database
-  postgres:
-    image: postgres:16-alpine
-    container_name: esgseed
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=esgseed
-      - POSTGRES_PASSWORD=esgseed1234
-      - POSTGRES_DB=esgseeddb
-      - POSTGRES_INITDB_ARGS=--encoding=UTF-8
-    volumes:
-      - postgres-data:/var/lib/postgresql/data
-      - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
-    networks:
-      - microservices-network
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U esgseed" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 networks:
   microservices-network:

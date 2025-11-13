@@ -4,3 +4,4 @@ RUN apk add --no-cache curl
 COPY ./build/libs/*.jar soccer-service.jar
 ENTRYPOINT ["java", "-jar", "/soccer-service.jar"]
 
+
