@@ -5,7 +5,7 @@ spring:
   application:
     name: soccer
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:5432/${DB_NAME:soccer_db}
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/${DB_NAME:esgseeddb}
     username: ${DB_USER:esgseed}
     password: ${DB_PASSWORD:esgseed1234}
     driver-class-name: org.postgresql.Driver

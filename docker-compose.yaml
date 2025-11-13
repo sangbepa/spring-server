@@ -144,7 +144,7 @@ services:
       - DB_HOST=postgres
       - DB_USER=esgseed
       - DB_PASSWORD=esgseed1234
-      - DB_NAME=soccer_db
+      - DB_NAME=esgseeddb
 
 networks:
   microservices-network:
