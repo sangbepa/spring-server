@@ -98,7 +98,7 @@ services:
       - DB_HOST=postgres
       - DB_USER=esgseed
       - DB_PASSWORD=esgseed1234
-      - DB_NAME=common_db
+      - DB_NAME=esgseeddb
 
   # User Service
   user-service:
@@ -121,7 +121,7 @@ services:
       - DB_HOST=postgres
       - DB_USER=esgseed
       - DB_PASSWORD=esgseed1234
-      - DB_NAME=user_db
+      - DB_NAME=esgseeddb
 
   # Soccer Service
   soccer-service:
