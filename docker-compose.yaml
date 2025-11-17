@@ -77,6 +77,28 @@ services:
       - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
 
+  # API Gateway - Eureka Server 이후 실행
+  api-gateway:
+    build:
+      context: ./server/gateway
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "9000:9000"
+    networks:
+      - microservices-network
+    depends_on:
+      eureka-server:
+        condition: service_healthy
+    environment:
+      - SPRING_CLOUD_CONFIG_URI=http://config-server:8888
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka/
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/actuator/health" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Common Service
   common-service:
     build:
@@ -145,6 +167,28 @@ services:
       - DB_USER=esgseed
       - DB_PASSWORD=esgseed1234
       - DB_NAME=esgseeddb
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: ui-server-frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      # API Gateway를 통한 통합 엔드포인트
+      - NEXT_PUBLIC_API_GATEWAY=http://api-gateway:9000
+      # 각 서비스별 경로
+      - NEXT_PUBLIC_SOCCER_API=/api/soccer
+      - NEXT_PUBLIC_USER_API=/api/user
+      - NEXT_PUBLIC_COMMON_API=/api/common
+    networks:
+      - microservices-network
+    depends_on:
+      - api-gateway
+    restart: unless-stopped
 
 networks:
   microservices-network:

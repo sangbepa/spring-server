@@ -1,0 +1,11 @@
+bootJar.enabled = true
+jar.enabled = false
+
+dependencies {
+	// Spring Cloud Gateway는 WebFlux 기반이므로 starter-web 불필요 (제거)
+	implementation 'org.springframework.cloud:spring-cloud-starter-gateway'
+	implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+}
+
