@@ -4,7 +4,6 @@ rootProject.name = 'api'
 include 'server:config'
 include 'server:discovery'
 include 'server:eureka'
-include 'server:gateway'
 
 // Service modules
 include 'service:common'
@@ -15,7 +14,6 @@ include 'service:user'
 project(':server:config').projectDir = new File(rootDir, 'server/config')
 project(':server:discovery').projectDir = new File(rootDir, 'server/discovery')
 project(':server:eureka').projectDir = new File(rootDir, 'server/eureka')
-project(':server:gateway').projectDir = new File(rootDir, 'server/gateway')
 project(':service:common').projectDir = new File(rootDir, 'service/common')
 project(':service:soccer').projectDir = new File(rootDir, 'service/soccer')
 project(':service:user').projectDir = new File(rootDir, 'service/user')
