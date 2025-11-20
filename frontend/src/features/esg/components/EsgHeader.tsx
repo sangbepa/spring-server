@@ -1,64 +1,78 @@
-import { FileDown, Sparkles } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+'use client';
+
+import { Sparkles, FileDown, Download } from 'lucide-react';
 
 interface EsgHeaderProps {
-  showExportButtons: boolean;
+  activeTab: 'consult' | 'report';
   onExportPDF: () => void;
   onExportWord: () => void;
 }
 
-export function EsgHeader({ showExportButtons, onExportPDF, onExportWord }: EsgHeaderProps) {
+export function EsgHeader({ activeTab, onExportPDF, onExportWord }: EsgHeaderProps) {
   return (
-    <header className="bg-gradient-to-r from-emerald-50 via-green-50 to-teal-50 border-b border-emerald-200/50 shadow-md w-full z-10 backdrop-blur-sm">
-      <div className="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
+    <header className="relative bg-gradient-to-r from-blue-600 via-blue-500 to-blue-600 shadow-2xl w-full z-10 overflow-hidden">
+      {/* 배경 애니메이션 효과 */}
+      <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 via-blue-300/20 to-blue-400/20 animate-pulse"></div>
+      {/* 패턴 배경 */}
+      <div
+        className="absolute top-0 left-0 w-full h-full opacity-20"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      ></div>
+
+      <div className="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* 로고 및 타이틀 */}
-          <div className="flex items-center space-x-3">
-            <Link href="/esg" className="flex items-center space-x-3 group">
-              <div className="bg-gradient-to-br from-emerald-500 to-teal-600 p-2.5 rounded-xl shadow-lg group-hover:shadow-xl transition-shadow">
-                <Sparkles className="text-white" size={24} />
+          <div className="flex items-center space-x-3 group">
+            <div className="relative">
+              <div className="absolute inset-0 bg-white/30 rounded-xl blur-lg group-hover:blur-xl transition-all duration-300"></div>
+              <div className="relative bg-white/90 backdrop-blur-sm p-3 rounded-xl shadow-lg group-hover:shadow-2xl transition-all duration-300 group-hover:scale-105">
+                <Sparkles className="text-blue-600" size={28} />
               </div>
-              <div>
-                <h1 className="text-xl font-bold bg-gradient-to-r from-emerald-700 to-teal-700 bg-clip-text text-transparent">
-                  AI ESG Consultant
-                </h1>
-                <p className="text-xs text-emerald-600 font-medium">IFRS S2 기반 보고서 생성</p>
-              </div>
-            </Link>
-            <span className="bg-emerald-100 text-emerald-700 text-xs px-3 py-1 rounded-full font-semibold border border-emerald-200">
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-white drop-shadow-lg">AI ESG Consultant</h1>
+              <p className="text-xs text-white/90 font-medium">IFRS S2 기반 보고서 생성</p>
+            </div>
+            <span className="ml-2 bg-white/20 backdrop-blur-sm text-white text-xs font-bold px-3 py-1 rounded-full border border-white/30 shadow-lg">
               Prototype
             </span>
           </div>
 
           {/* 버전 및 내보내기 버튼 */}
           <div className="flex items-center space-x-4">
-            <div className="hidden md:flex items-center space-x-2 bg-white/60 backdrop-blur-sm px-4 py-2 rounded-lg border border-emerald-200/50">
-              <span className="text-xs text-emerald-700 font-medium">버전</span>
-              <span className="text-sm font-semibold text-emerald-900">v1.0</span>
-              <span className="text-xs text-emerald-600">(초안)</span>
+            <div className="hidden md:flex items-center space-x-2 bg-white/20 backdrop-blur-md px-4 py-2 rounded-xl border border-white/30 shadow-lg">
+              <span className="text-xs text-white/90 font-medium">버전</span>
+              <span className="text-sm font-bold text-white">v1.0</span>
+              <span className="text-xs text-white/70">(초안)</span>
             </div>
-            {showExportButtons && (
+            {activeTab === 'report' && (
               <div className="flex items-center space-x-2">
-                <Button
+                <button
                   onClick={onExportPDF}
-                  className="text-sm bg-gradient-to-r from-red-500 to-red-600 text-white px-5 py-2.5 hover:from-red-600 hover:to-red-700 shadow-md hover:shadow-lg transition-all rounded-lg font-medium"
+                  className="group relative bg-gradient-to-r from-red-500 to-red-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:from-red-600 hover:to-red-700 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl hover:scale-105 overflow-hidden"
                 >
-                  <FileDown className="mr-2" size={18} />
-                  <span>PDF</span>
-                </Button>
-                <Button
+                  <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                  <Download className="relative z-10" size={18} />
+                  <span className="relative z-10">PDF</span>
+                </button>
+                <button
                   onClick={onExportWord}
-                  className="text-sm bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2.5 hover:from-blue-600 hover:to-blue-700 shadow-md hover:shadow-lg transition-all rounded-lg font-medium"
+                  className="group relative bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2.5 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 flex items-center space-x-2 shadow-lg hover:shadow-xl hover:scale-105 overflow-hidden"
                 >
-                  <FileDown className="mr-2" size={18} />
-                  <span>Word</span>
-                </Button>
+                  <div className="absolute inset-0 bg-white/20 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300"></div>
+                  <FileDown className="relative z-10" size={18} />
+                  <span className="relative z-10">Word</span>
+                </button>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* 하단 그라데이션 라인 */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-white/50 to-transparent"></div>
     </header>
   );
 }
